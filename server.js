@@ -3,15 +3,43 @@
 
 // codes pulled from the remote using RFSniffer
 // we aren't actually using brightness up/down and just picking the closest quarter so we know the status
+// 'script' is location of non codesend script. this is written a little backwards because it started as a just codesend thing
 let codes = {
-	'off': '2484227',
-	'on': '2484225',
-	'down': '2484233',
-	'up': '2484231',
-	'25': '2484237',
-	'50': '2484239',
-	'75': '2484243',
-	'100': '2484245'
+	'backyard': {
+		'off': '2484227',
+		'on': '2484225',
+		'down': '2484233',
+		'up': '2484231',
+		'25': '2484237',
+		'50': '2484239',
+		'75': '2484243',
+		'100': '2484245'
+	},
+	'switch1' : {
+		'script': '/home/pi/light-server/etekcityZapTx',
+		'off': '1 off',
+		'on': '1 on'
+	},
+	'switch2' : {
+		'script': '/home/pi/light-server/etekcityZapTx',
+		'off': '2 off',
+		'on': '2 on'
+	},
+	'switch3' : {
+		'script': '/home/pi/light-server/etekcityZapTx',
+		'off': '3 off',
+		'on': '3 on'
+	},
+	'switch4' : {
+		'script': '/home/pi/light-server/etekcityZapTx',
+		'off': '4 off',
+		'on': '4 on'
+	},
+	'switch5' : {
+		'script': '/home/pi/light-server/etekcityZapTx',
+		'off': '5 off',
+		'on': '5 on'
+	}
 };
 
 // location of your codesend binary
@@ -30,13 +58,21 @@ const { exec } = require('child_process');
 
 // current state and brightness
 // we're defaulting to off and 100% brightness
-var current_state = false;
-var current_brightness = 100;
+var current_state = {};
+var current_brightness = {};
+for (var device in codes) {
+	current_state[device] = false;
+	current_brightness[device] = 100;
+}
 
-var sendCode = function (command) {
+var sendCode = function (command, device) {
 	for(var i=0; i < commandRepeat; i++) {
-		console.log(codesend + ' ' + codes[command]);
-		exec(codesend + ' ' + codes[command], (err, stdout, stderr) => {
+		var executable = codesend;
+		if ('script' in codes[device]) {
+			executable = codes[device]['script'];
+		}
+		console.log(executable + ' ' + codes[device][command]);
+		exec(executable + ' ' + codes[device][command], (err, stdout, stderr) => {
 			//console.log(`stdout: ${stdout}`);
 			//console.log(`stderr: ${stderr}`);
 		});
@@ -47,25 +83,30 @@ http.createServer(function(req, res) {
 	res.writeHead(200, {'Content-Type': 'text/html'});
 	var q = url.parse(req.url, true).query;
 	console.log(q);
+	if (!q.device || q.device == '') {
+		var device = 'backyard';
+	} else {
+		var device = q.device;
+	}
 	// check for status check
 	switch(q.mode) {
 		case 'status':
-			res.end((current_state) ? '1' : '0' );
+			res.end((current_state[device]) ? '1' : '0' );
 			break;
 		case 'brightness':
-			res.end(current_brightness.toString());
+			res.end(current_brightness[device].toString());
 			break;
 		case 'switchOn':
 			// got switch on. when changing brightness, it sends on also, so we need to ignore that to not get into overloading the commands
-			if (!current_state) {
-				sendCode('on');
-				current_state = true;
+			if (!current_state[device]) {
+				sendCode('on', device);
+				current_state[device] = true;
 			}
 			res.end('1');
 			break;
 		case 'switchOff':
-			sendCode('off');
-			current_state = false;
+			sendCode('off', device);
+			current_state[device] = false;
 			res.end('1');
 			break;
 		case 'changeBrightness':
@@ -75,21 +116,21 @@ http.createServer(function(req, res) {
 			var roundedBrightness = Math.round(brightnessLevel / 100 *4) / 4 * 100;
 			// if we get a 0 brightness, set brightness to 0 and turn off the light
 			if (roundedBrightness === 0) {
-				sendCode('off');
-				current_state = false;
-				current_brightness = 0;
+				sendCode('off', device);
+				current_state[device] = false;
+				current_state[device] = 0;
 			} else {
 				// if the light is off, turn it on
 				var delay = 0;
-				if (!current_state) {
-					sendCode('on');
-					current_state = true;
+				if (!current_state[device]) {
+					sendCode('on', device);
+					current_state[device] = true;
 					delay = 1000;
 				}
 				// we can't execute the commands too fast, so delay the brightness change if we just turned them on
 				setTimeout(function() {
-					sendCode(roundedBrightness.toString());
-					current_brightness = roundedBrightness;
+					sendCode(roundedBrightness.toString(), device);
+					current_brightness[device] = roundedBrightness;
 				}, delay);
 				
 			}
