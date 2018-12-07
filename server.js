@@ -46,8 +46,13 @@ let codes = {
 let codesend = '/home/pi/433Utils/RPi_utils/codesend';
 
 // number of times you want to repeat commands
-let commandRepeat = 1;
+let commandRepeat = 2;
 
+// queue of commands to run. we have to space out the commands or it'll try to execute commands over one another
+var commandQueue = [];
+
+// delay in ms between commands
+let commandDelay = 500;
 
 
 
@@ -65,17 +70,25 @@ for (var device in codes) {
 	current_brightness[device] = 100;
 }
 
+var processQueue = function() {
+	if (commandQueue.length > 0) {
+		exec(commandQueue.shift(), (err, stdout, stderr) => {
+			//console.log(`stdout: ${stdout}`);
+			//console.log(`stderr: ${stderr}`);
+		});
+	}
+	setTimeout(processQueue, commandDelay);
+}
+setTimeout(processQueue, commandDelay);
+
 var sendCode = function (command, device) {
 	for(var i=0; i < commandRepeat; i++) {
 		var executable = codesend;
 		if ('script' in codes[device]) {
 			executable = codes[device]['script'];
 		}
-		console.log(executable + ' ' + codes[device][command]);
-		exec(executable + ' ' + codes[device][command], (err, stdout, stderr) => {
-			//console.log(`stdout: ${stdout}`);
-			//console.log(`stderr: ${stderr}`);
-		});
+		console.log('appending: ' + executable + ' ' + codes[device][command]);
+		commandQueue.push(executable + ' ' + codes[device][command]);
 	}
 };
 
