@@ -15,7 +15,7 @@ RUN git clone --recursive git://github.com/ninjablocks/433Utils.git && \
 
 COPY etekcityZapTx.c .
 
-RUN gcc etekcityZapTx.c
+RUN gcc -Wall -o etekcityZapTx etekcityZapTx.c -lwiringPi
 
 COPY server.js .
 
