@@ -16,34 +16,34 @@ let codes = {
 		'100': '2484245'
 	},
 	'switch1' : {
-		'script': '/home/pi/light-server/etekcityZapTx',
+		'script': '/usr/src/app/etekcityZapTx',
 		'off': '1 off',
 		'on': '1 on'
 	},
 	'switch2' : {
-		'script': '/home/pi/light-server/etekcityZapTx',
+		'script': '/usr/src/app/etekcityZapTx',
 		'off': '2 off',
 		'on': '2 on'
 	},
 	'switch3' : {
-		'script': '/home/pi/light-server/etekcityZapTx',
+		'script': '/usr/src/app/etekcityZapTx',
 		'off': '3 off',
 		'on': '3 on'
 	},
 	'switch4' : {
-		'script': '/home/pi/light-server/etekcityZapTx',
+		'script': '/usr/src/app/etekcityZapTx',
 		'off': '4 off',
 		'on': '4 on'
 	},
 	'switch5' : {
-		'script': '/home/pi/light-server/etekcityZapTx',
+		'script': '/usr/src/app/etekcityZapTx',
 		'off': '5 off',
 		'on': '5 on'
 	}
 };
 
 // location of your codesend binary
-let codesend = '/home/pi/433Utils/RPi_utils/codesend';
+let codesend = '/usr/src/app/433Utils/RPi_utils/codesend';
 
 // number of times you want to repeat commands
 let commandRepeat = 2;
