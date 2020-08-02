@@ -10,7 +10,7 @@ RUN git clone --recursive git://github.com/ninjablocks/433Utils.git && \
   git clone git://git.drogon.net/wiringPi && \
   cd wiringPi && \
   ./build && \
-  cd .. &&
+  cd .. && \
   cd ../..
 
 CMD nodejs server.js
