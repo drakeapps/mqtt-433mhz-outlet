@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+    light-server:
+        image: drakeapps/light-server
+        privileged: true
+        expose:
+            - "8080"
+        restart: always
+        environment:
+            - UDEV=1
+        devices:
+            - '/dev:/dev'
+    
