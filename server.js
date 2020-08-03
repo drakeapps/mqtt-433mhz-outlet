@@ -154,5 +154,5 @@ http.createServer(function(req, res) {
 
 
 	res.end('error');
-}).listen(8080);
+}).listen(8080, '0.0.0.0');
 

@@ -4,11 +4,7 @@ services:
     light-server:
         image: drakeapps/light-server
         privileged: true
-        expose:
+        ports:
             - "8080"
         restart: always
-        environment:
-            - UDEV=1
-        devices:
-            - '/dev:/dev'
     
