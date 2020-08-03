@@ -1,4 +1,4 @@
-
+console.log('init script');
 // configuration
 
 // codes pulled from the remote using RFSniffer
@@ -91,7 +91,7 @@ var sendCode = function (command, device) {
 		commandQueue.push(executable + ' ' + codes[device][command]);
 	}
 };
-
+console.log('creating server');
 http.createServer(function(req, res) {
 	res.writeHead(200, {'Content-Type': 'text/html'});
 	var q = url.parse(req.url, true).query;
