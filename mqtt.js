@@ -52,7 +52,7 @@ let commandDelay = 500;
 console.log('initializing state');
 let current_state = {};
 let current_brightness = {};
-Object.keys(code).forEach((device) => {
+Object.keys(codes).forEach((device) => {
 	current_state[device] = false;
 	current_brightness[device] = 100;
 });
