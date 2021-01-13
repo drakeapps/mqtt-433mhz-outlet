@@ -8,6 +8,10 @@ services:
         volumes:
             - ./config/:/usr/src/app/config
         command: "node mqtt.js --mqttHost ${MQTTHOST}"
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "20m"
     sniffer:
         image: ghcr.io/drakeapps/mqtt-433mhz-outlet
         privileged: true
