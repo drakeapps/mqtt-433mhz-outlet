@@ -35,7 +35,7 @@ let commandQueue = [];
 const commandDelay = 500;
 
 // location of your codesend binary
-const codesend = (argv.codesend) ? argv.codesend : '/usr/src/app/433Utils/RPi_utils/codesend';
+const codesend = (argv.codesend) ? argv.codesend : '/usr/src/app/build/etekCity';
 
 
 // current state and brightness

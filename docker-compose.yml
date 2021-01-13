@@ -2,14 +2,14 @@ version: '3'
 
 services:
     server:
-        image: drakeapps/light-server
+        image: ghcr.io/drakeapps/mqtt-433mhz-outlet
         privileged: true
         restart: always
         volumes:
             - ./config/:/usr/src/app/config
         command: "node mqtt.js --mqttHost ${MQTTHOST}"
     sniffer:
-        image: drakeapps/light-server
+        image: ghcr.io/drakeapps/mqtt-433mhz-outlet
         privileged: true
         command: "/usr/src/app/433Utils/RPi_utils/RFSniffer"
     
