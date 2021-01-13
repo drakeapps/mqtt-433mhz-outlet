@@ -16,7 +16,7 @@ RUN git clone --recursive git://github.com/ninjablocks/433Utils.git && \
   cd ../..
 
 # build etekCity
-COPY etekcityZapTx.c ./build/
+COPY build .
 RUN gcc -Wall -o etekcityZapTx etekcityZapTx.c -lwiringPi
 
 
