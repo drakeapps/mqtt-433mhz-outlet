@@ -14,10 +14,6 @@ RUN git clone --recursive git://github.com/ninjablocks/433Utils.git && \
   make all && \
   cd ../..
 
-# COPY etekcityZapTx.c .
-
-# RUN gcc -Wall -o etekcityZapTx etekcityZapTx.c -lwiringPi
-
 COPY package.json package-lock.json ./
 
 RUN npm i

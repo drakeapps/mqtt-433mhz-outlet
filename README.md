@@ -19,10 +19,11 @@ This is for an outdoor string light LED controller, but I'm sure others exist. T
 ## Docker
 
 1. Clone this repo
-1. Follow the steps above to collect your 433Mhz code (TODO: docker image for code sniffer)
+1. Follow the first step above related to wiring your pi
+1. `docker-compose up sniffer` and record the values of the button presses
 1. Edit `config/config.js` with these values
 1. Copy `.env-sample` to `.env` and edit `MQTTHOST` value
-1. `docker-compose up -d`
+1. `docker-compose up -d server`
 
 ## Homebridge Setup
 
