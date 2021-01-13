@@ -5,4 +5,7 @@ services:
         image: drakeapps/light-server
         privileged: true
         restart: always
+        volumes:
+            - ./config/:/usr/src/app/config
+        command: "node mqtt.js --mqttHost ${MQTTHOST}"
     

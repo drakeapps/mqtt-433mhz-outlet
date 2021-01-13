@@ -3,12 +3,16 @@ const yargs = require('yargs');
 const mqtt = require('mqtt');
 const { exec } = require('child_process');
 
-
+const codes = require('./config/config.js');
 
 const argv = yargs
 	.option('mqttHost', {
 		description: 'Hostname of MQTT broker',
 		alias: 'mqtt',
+		type: 'string'
+	})
+	.option('codesend', {
+		description: 'Path to codesend binary',
 		type: 'string'
 	})
 	.help()
@@ -20,33 +24,18 @@ const argv = yargs
 console.log('init script');
 console.log(`args: ${argv}`);
 
-// codes pulled from the remote using RFSniffer
-// we aren't actually using brightness up/down and just picking the closest quarter so we know the status
-// 'script' is location of non codesend script. this is written a little backwards because it started as a just codesend thing
-let codes = {
-	'backyard': {
-		'off': '2484227',
-		'on': '2484225',
-		'down': '2484233',
-		'up': '2484231',
-		'25': '2484237',
-		'50': '2484239',
-		'75': '2484243',
-		'100': '2484245'
-	}
-};
-
-// location of your codesend binary
-let codesend = '/usr/src/app/433Utils/RPi_utils/codesend';
 
 // number of times you want to repeat commands
-let commandRepeat = 2;
+const commandRepeat = 2;
 
 // queue of commands to run. we have to space out the commands or it'll try to execute commands over one another
 let commandQueue = [];
 
 // delay in ms between commands
-let commandDelay = 500;
+const commandDelay = 500;
+
+// location of your codesend binary
+const codesend = (argv.codesend) ? argv.codesend : '/usr/src/app/433Utils/RPi_utils/codesend';
 
 
 // current state and brightness
@@ -132,7 +121,7 @@ const changeBrightness = (device, brightness) => {
 // MQTT Logic
 //----------------
 
-let mqttHost = (argv.mqttHost) ? argv.mqttHost : 'o.xrho.com';
+let mqttHost = (argv.mqttHost) ? argv.mqttHost : 'localhost';
 console.log(`connecting to mqtt broker ${mqttHost}`);
 const client = mqtt.connect(`mqtt://${mqttHost}`);
 
