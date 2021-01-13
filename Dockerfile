@@ -13,10 +13,14 @@ RUN git clone --recursive git://github.com/ninjablocks/433Utils.git && \
   cd .. && \
   cd ../..
 
-COPY etekcityZapTx.c .
+# COPY etekcityZapTx.c .
 
-RUN gcc -Wall -o etekcityZapTx etekcityZapTx.c -lwiringPi
+# RUN gcc -Wall -o etekcityZapTx etekcityZapTx.c -lwiringPi
 
-COPY server.js .
+COPY package.json package-lock.json ./
 
-CMD nodejs server.js
+RUN npm i
+
+COPY mqtt.js .
+
+CMD nodejs mqtt.js

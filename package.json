@@ -1,0 +1,24 @@
+{
+  "name": "light-server",
+  "version": "1.0.0",
+  "description": "This is for an outdoor string light LED controller. The remote is running on 433MHz and supports brightness levels. The remote has the buttons on/off/brightness up/brightness down/25%/50%/75%/100%. This only uses the on/off and specific brightness levels.",
+  "main": "mqtt.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drakeapps/light-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drakeapps/light-server/issues"
+  },
+  "homepage": "https://github.com/drakeapps/light-server#readme",
+  "dependencies": {
+    "mqtt": "^4.2.6",
+    "yargs": "^16.2.0"
+  }
+}
